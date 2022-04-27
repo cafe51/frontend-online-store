@@ -28,6 +28,7 @@ export default class Home extends Component {
     const { nameCategory, categories, nameProduct } = this.state;
     const idCategory = categories.find((element) => element.name === nameCategory);
     const getProducts = await getProductsFromCategoryAndQuery(idCategory.id, nameProduct);
+    console.log(getProducts);
     this.setState({
       products: getProducts.results,
       idCategory,
@@ -96,6 +97,7 @@ export default class Home extends Component {
                       title={ prod.title }
                       thumbnail={ prod.thumbnail }
                       price={ prod.price }
+                      id={ prod.id }
                     />
                   ))
                 )
