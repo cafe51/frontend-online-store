@@ -15,7 +15,6 @@ export default class Categories extends Component {
 
   getCategoriesApi = async () => {
     const categories = await getCategories();
-    console.log(categories);
     this.setState({
       categories,
     });
