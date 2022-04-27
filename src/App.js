@@ -16,7 +16,6 @@ export default class App extends Component {
             render={ (props) => <Home { ...props } /> }
           />
           <Route exact path="/shoppingCart" component={ ShoppingCart } />
-          {/* <Link to="/shopping" > About </Link> */}
         </Switch>
       </BrowserRouter>
     );

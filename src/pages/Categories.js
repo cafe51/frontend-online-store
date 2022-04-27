@@ -10,7 +10,7 @@ export default class Categories extends Component {
   render() {
     const { categories, clickButton } = this.props;
     return (
-      <div>
+      <div className="categories">
         <h3>Categorias</h3>
         {
           categories.map((element) => (

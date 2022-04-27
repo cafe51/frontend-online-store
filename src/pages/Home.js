@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Categories from './Categories';
 import Cards from '../components/Cards';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
+import './Home.css';
 
 export default class Home extends Component {
   constructor() {
@@ -23,18 +24,20 @@ export default class Home extends Component {
     });
   }
 
+  getProductsApi = async () => {
+    const { nameCategory, categories, nameProduct } = this.state;
+    const idCategory = categories.find((element) => element.name === nameCategory);
+    const getProducts = await getProductsFromCategoryAndQuery(idCategory.id, nameProduct);
+    this.setState({
+      products: getProducts.results,
+      idCategory,
+    });
+  }
+
   clickButton = ({ target }) => {
-    // console.log(event.target);
     this.setState(() => ({
       nameCategory: target.innerHTML,
-    }), async () => {
-      const { nameCategory, categories } = this.state;
-      const idCategory = categories.find((element) => element.name === nameCategory);
-      const getProducts = await getProductsFromCategoryAndQuery(idCategory.id, '');
-      this.setState({
-        products: getProducts.results,
-      });
-    });
+    }), this.getProductsApi);
   }
 
   handleChange = ({ target: { value } }) => {
@@ -45,7 +48,7 @@ export default class Home extends Component {
 
   handleClick = async () => {
     const { nameProduct, idCategory } = this.state;
-    const getProducts = await getProductsFromCategoryAndQuery(idCategory, nameProduct);
+    const getProducts = await getProductsFromCategoryAndQuery(idCategory.id, nameProduct);
     this.setState({
       products: getProducts.results,
     });
@@ -55,44 +58,50 @@ export default class Home extends Component {
     const { nameProduct, products, categories } = this.state;
     return (
       <div>
-        <input
-          type="text"
-          value={ nameProduct }
-          data-testid="query-input"
-          onChange={ this.handleChange }
-        />
-        <button
-          type="button"
-          data-testid="query-button"
-          onClick={ this.handleClick }
-        >
-          Buscar
-        </button>
-        <p
-          data-testid="home-initial-message"
-        >
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </p>
-        <Link to="/shoppingCart" data-testid="shopping-cart-button"> Carrinho </Link>
-        <Categories
-          categories={ categories }
-          getCategoriesApi={ this.getCategoriesApi }
-          clickButton={ this.clickButton }
-        />
-        {
-          products.length === 0
-            ? <p>Nenhum produto foi encontrado</p>
-            : (
-              products.map((prod) => (
-                <Cards
-                  key={ prod.id }
-                  title={ prod.title }
-                  thumbnail={ prod.thumbnail }
-                  price={ prod.price }
-                />
-              ))
-            )
-        }
+        <section>
+          <input
+            type="text"
+            value={ nameProduct }
+            data-testid="query-input"
+            onChange={ this.handleChange }
+          />
+          <button
+            type="button"
+            data-testid="query-button"
+            onClick={ this.handleClick }
+          >
+            Buscar
+          </button>
+          <p
+            data-testid="home-initial-message"
+          >
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </p>
+          <Link to="/shoppingCart" data-testid="shopping-cart-button"> Carrinho </Link>
+        </section>
+        <main className="main">
+          <Categories
+            categories={ categories }
+            getCategoriesApi={ this.getCategoriesApi }
+            clickButton={ this.clickButton }
+          />
+          <section className="cards-container">
+            {
+              products.length === 0
+                ? <p>Nenhum produto foi encontrado</p>
+                : (
+                  products.map((prod) => (
+                    <Cards
+                      key={ prod.id }
+                      title={ prod.title }
+                      thumbnail={ prod.thumbnail }
+                      price={ prod.price }
+                    />
+                  ))
+                )
+            }
+          </section>
+        </main>
       </div>
     );
   }
