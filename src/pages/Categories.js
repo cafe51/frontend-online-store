@@ -1,27 +1,14 @@
 import React, { Component } from 'react';
-import { getCategories } from '../services/api';
+import PropTypes from 'prop-types';
 
 export default class Categories extends Component {
-  constructor() {
-    super();
-    this.state = {
-      categories: [],
-    };
-  }
-
   componentDidMount() {
-    this.getCategoriesApi();
-  }
-
-  getCategoriesApi = async () => {
-    const categories = await getCategories();
-    this.setState({
-      categories,
-    });
+    const { getCategoriesApi } = this.props;
+    getCategoriesApi();
   }
 
   render() {
-    const { categories } = this.state;
+    const { categories, clickButton } = this.props;
     return (
       <div>
         <h3>Categorias</h3>
@@ -31,6 +18,8 @@ export default class Categories extends Component {
               key={ element.id }
               type="button"
               data-testid="category"
+              onClick={ clickButton }
+              name={ element.id }
             >
               { element.name }
             </button>
@@ -40,3 +29,9 @@ export default class Categories extends Component {
     );
   }
 }
+
+Categories.propTypes = {
+  getCategoriesApi: PropTypes.func.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.number).isRequired,
+  clickButton: PropTypes.func.isRequired,
+};
