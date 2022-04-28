@@ -14,9 +14,12 @@ export default class App extends Component {
           <Route
             exact
             path="/"
-            render={ (props) => <Home { ...props } /> }
+            component={ Home }
           />
-          <Route exact path="/shoppingCart" component={ ShoppingCart } />
+          <Route
+            path="/shoppingCart"
+            component={ ShoppingCart }
+          />
           <Route
             path="/productDetail/:id"
             render={ (props) => <ProductDetail { ...props } /> }
