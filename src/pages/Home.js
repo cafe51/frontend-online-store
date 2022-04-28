@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Categories from './Categories';
 import Cards from '../components/Cards';
-import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
+import {
+  getProductsFromCategoryAndQuery, getCategories,
+} from '../services/api';
 import './Home.css';
 
 export default class Home extends Component {
@@ -28,7 +30,7 @@ export default class Home extends Component {
     const { nameCategory, categories, nameProduct } = this.state;
     const idCategory = categories.find((element) => element.name === nameCategory);
     const getProducts = await getProductsFromCategoryAndQuery(idCategory.id, nameProduct);
-    console.log(getProducts);
+    // console.log(getProducts);
     this.setState({
       products: getProducts.results,
       idCategory,
@@ -53,6 +55,23 @@ export default class Home extends Component {
     this.setState({
       products: getProducts.results,
     });
+  }
+
+  addCarrinho = (product) => {
+    const local = JSON.parse(localStorage.getItem('prod'));
+    let findProduct = local === null
+      ? undefined : local.find((prod) => prod.id === product.id);
+    let list = [];
+    if (findProduct !== undefined) {
+      findProduct.quant += 1;
+      const indexProd = local.find((prod, i) => i.id === product.id);
+      local[indexProd] = findProduct;
+      list = local;
+    } else {
+      findProduct = { ...product, quant: 1 };
+      list = local !== null ? [...local, findProduct] : [findProduct];
+    }
+    localStorage.setItem('prod', JSON.stringify(list));
   }
 
   render() {
@@ -98,6 +117,7 @@ export default class Home extends Component {
                       thumbnail={ prod.thumbnail }
                       price={ prod.price }
                       id={ prod.id }
+                      addCarrinho={ this.addCarrinho }
                     />
                   ))
                 )

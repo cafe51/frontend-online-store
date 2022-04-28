@@ -3,8 +3,29 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default class Cards extends Component {
+  /* constructor() {
+    super();
+    this.state = {
+      shoppingCart: [],
+    };
+  }
+
+  addCarrinho = () => {
+    const { title, thumbnail, price } = this.props;
+    const objshoppingCart = {
+      title,
+      thumbnail,
+      price,
+    };
+    // console.log(shoppingCart);
+    const { shoppingCart } = this.state;
+    const obj = { ...objshoppingCart }
+    shoppingCart.push(obj);
+    console.log(shoppingCart);
+  } */
+
   render() {
-    const { title, thumbnail, price, id } = this.props;
+    const { title, thumbnail, price, id, addCarrinho } = this.props;
     return (
       <div
         data-testid="product"
@@ -19,6 +40,13 @@ export default class Cards extends Component {
         >
           Detalhes
         </Link>
+        <button
+          type="button"
+          data-testid="product-add-to-cart"
+          onClick={ () => addCarrinho({ id, thumbnail, title, price }) }
+        >
+          Adicionar ao carrinho
+        </button>
       </div>
     );
   }
@@ -29,4 +57,5 @@ Cards.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
+  addCarrinho: PropTypes.func.isRequired,
 };
