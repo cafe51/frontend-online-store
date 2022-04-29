@@ -6,9 +6,9 @@ import FormProductDetail from '../components/FormProductDetail';
 
 export default class ProductDetail extends Component {
   constructor() {
-    const local = JSON.parse(localStorage.getItem('prod'));
-    const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-    const total = totalArray.reduce((result, acc) => acc + result);
+    // const local = JSON.parse(localStorage.getItem('prod'));
+    // const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
+    // const total = totalArray.reduce((result, acc) => acc + result);
 
     super();
     this.state = {
@@ -16,12 +16,15 @@ export default class ProductDetail extends Component {
       title: '',
       price: 0,
       attributes: [],
-      totalCart: local.length === 0 ? 0 : total,
+      totalCart: 0,
       // coisa: 0,
     };
   }
 
   async componentDidMount() {
+    // const local = JSON.parse(localStorage.getItem('prod'));
+    const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
+    const total = totalArray.reduce((result, acc) => acc + result);
     const { match: { params: { id } } } = this.props;
     const product = await getProductDetail(id);
     // console.log(product);
@@ -33,6 +36,7 @@ export default class ProductDetail extends Component {
       price,
       attributes,
       id,
+      totalCart: total,
     });
   }
 
