@@ -32,6 +32,6 @@ export default class Categories extends Component {
 
 Categories.propTypes = {
   getCategoriesApi: PropTypes.func.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.number).isRequired,
+  categories: PropTypes.arrayOf(PropTypes.shape).isRequired,
   clickButton: PropTypes.func.isRequired,
 };
