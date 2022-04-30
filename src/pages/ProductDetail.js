@@ -6,19 +6,24 @@ import FormProductDetail from '../components/FormProductDetail';
 
 export default class ProductDetail extends Component {
   constructor() {
+    const local = JSON.parse(localStorage.getItem('prod')) === null
+      ? [] : JSON.parse(localStorage.getItem('prod'));
+    const totalArray = local.map((e) => e.quant);
+    const total = totalArray.reduce((result, acc) => acc + result, 0);
+
     super();
     this.state = {
       thumbnail: '',
       title: '',
       price: 0,
       attributes: [],
+      totalCart: total,
     };
   }
 
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const product = await getProductDetail(id);
-    // console.log(product);
     const { thumbnail, title, price, attributes } = product;
     this.setState({
       thumbnail,
@@ -44,13 +49,27 @@ export default class ProductDetail extends Component {
       list = local !== null ? [...local, findProduct] : [findProduct];
     }
     localStorage.setItem('prod', JSON.stringify(list));
+
+    const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
+    const total = totalArray.reduce((result, acc) => acc + result, 0);
+    this.setState({ totalCart: total });
   }
 
   render() {
-    const { thumbnail, title, price, attributes, id } = this.state;
-    return (
+    const { thumbnail, title, price, attributes, id, totalCart } = this.state;
+
+    const cartLink = (
       <div>
-        <Link to="/shoppingCart" data-testid="shopping-cart-button"> Carrinho </Link>
+        Carrinho
+        <div data-testid="shopping-cart-size">
+          {/* { coisa } */}
+          {totalCart}
+        </div>
+      </div>
+    );
+
+    const producDetail = (
+      <div>
         <p data-testid="product-detail-name">{ title }</p>
         <p>{ price }</p>
         <button
@@ -69,6 +88,17 @@ export default class ProductDetail extends Component {
           ))
         }
         <FormProductDetail />
+      </div>
+    );
+
+    return (
+      <div>
+        <Link to="/shoppingCart" data-testid="shopping-cart-button">
+          { cartLink }
+        </Link>
+        { producDetail }
+        {/* {JSON.parse(localStorage.prod)[0].id} */}
+        {/* <FormProductDetail /> */}
       </div>
     );
   }

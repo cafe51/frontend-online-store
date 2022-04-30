@@ -3,6 +3,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import ShoppingCart from './pages/ShoppingCart';
 import ProductDetail from './pages/ProductDetail';
+import Checkout from './pages/Checkout';
 import './App.css';
 
 export default class App extends Component {
@@ -23,6 +24,10 @@ export default class App extends Component {
           <Route
             path="/productDetail/:id"
             render={ (props) => <ProductDetail { ...props } /> }
+          />
+          <Route
+            path="/checkout"
+            component={ Checkout }
           />
         </Switch>
       </BrowserRouter>

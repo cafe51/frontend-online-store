@@ -10,14 +10,23 @@ import './Home.css';
 export default class Home extends Component {
   constructor() {
     super();
+    // const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
+    // const total = totalArray.reduce((result, acc) => acc + result);
     this.state = {
       nameProduct: '',
       products: [],
       categories: [],
       nameCategory: '',
       idCategory: '',
+      carrinhoTotal: 0,
     };
   }
+
+  // componentDidMount() {
+  //   const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
+  //   const total = totalArray.reduce((result, acc) => acc + result);
+  //   this.setState({ carrinhoTotal: total });
+  // }
 
   getCategoriesApi = async () => {
     const categories = await getCategories();
@@ -72,10 +81,15 @@ export default class Home extends Component {
       list = local !== null ? [...local, findProduct] : [findProduct];
     }
     localStorage.setItem('prod', JSON.stringify(list));
+
+    const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
+    const total = totalArray.reduce((result, acc) => acc + result);
+    this.setState({ carrinhoTotal: total });
+    // console.log(this.state.carrinhoTotal)
   }
 
   render() {
-    const { nameProduct, products, categories } = this.state;
+    const { nameProduct, products, categories, carrinhoTotal } = this.state;
     return (
       <div>
         <section>
@@ -97,7 +111,12 @@ export default class Home extends Component {
           >
             Digite algum termo de pesquisa ou escolha uma categoria.
           </p>
-          <Link to="/shoppingCart" data-testid="shopping-cart-button"> Carrinho </Link>
+          <Link to="/shoppingCart" data-testid="shopping-cart-button">
+            <div>
+              Carrinho
+              <div data-testid="shopping-cart-size">{ carrinhoTotal }</div>
+            </div>
+          </Link>
         </section>
         <main className="main">
           <Categories

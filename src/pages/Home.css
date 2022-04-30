@@ -35,3 +35,43 @@
   justify-content: space-evenly;
   width: 80%;
 }
+
+.finalizaProd {
+  display: flex;
+}
+
+.finalizaProd img {
+  margin: 10px;
+  width: 100px;
+}
+
+.finalizaProd div {
+  align-self: center;
+  margin: 10px;
+  width: 400px;
+}
+
+.finalizaProd span {
+  align-self: center;
+  margin: 10px;
+  text-align: center;
+  width: 50px;
+}
+
+.finalize-container {
+  border: 1px solid black;
+  margin-bottom: 20px;
+}
+
+.finalize-main {
+  margin: 0 auto;
+  width: 90%;
+}
+
+.finalize-priceTotal {
+  margin: 20px 10px;
+}
+
+.finalize-container h2 {
+  margin: 10px;
+}
