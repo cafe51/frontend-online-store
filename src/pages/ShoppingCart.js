@@ -45,6 +45,7 @@ export default class ShoppingCart extends Component {
     }
     this.setState(() => ({
       local,
+      isDisabled: false,
     }), () => localStorage.setItem('prod', JSON.stringify(local)));
   }
 

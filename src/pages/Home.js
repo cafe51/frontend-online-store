@@ -52,7 +52,6 @@ export default class Home extends Component {
   handleClick = async () => {
     const { nameProduct, idCategory } = this.state;
     const getProducts = await getProductsFromCategoryAndQuery(idCategory.id, nameProduct);
-    console.log(getProducts);
     this.setState({
       products: getProducts.results,
     });
