@@ -1,95 +1,153 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
-// import { Link } from 'react-router-dom';
-// import { getProductDetail } from '../services/api';
 
 export default class FormProductDetail extends Component {
   constructor() {
-    // const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-    // const total = totalArray.reduce((result, acc) => acc + result);
-
     super();
     this.state = {
       avaliacoes: [],
+      nota: 0,
+      isDisable: true,
     };
   }
 
-  handleClick = ({ target }) => {
+  componentDidMount() {
+    const local = JSON.parse(localStorage.getItem('avaliacoesLocalStorage')) === null
+      ? []
+      : JSON.parse(localStorage.getItem('avaliacoesLocalStorage'));
+    this.setState({ avaliacoes: [...local] });
+  }
+
+  clickButtonAvaliar = ({ target }) => {
     const email = target.parentElement.childNodes[0].firstChild.value;
-    const comentario = target.parentElement.childNodes[1].firstChild.value;
+    const { nota } = this.state;
+    const comentario = target.parentElement.childNodes[2].firstChild.value;
     const avaliacaoObj = {
       email,
+      nota,
       comentario,
     };
-    // console.log(avaliacaoObj);
     const { avaliacoes } = this.state;
     this.setState({
       avaliacoes: [...avaliacoes, avaliacaoObj],
+    }, () => {
+      const { avaliacoes: avaliacoesAtual } = this.state; // PARA NAO DAR PROBLEMA NO LINT FIZ ESSA DESESTRUTURAÇÃO DANDO UM NOVO NOME
+      localStorage.setItem('avaliacoesLocalStorage', JSON.stringify(avaliacoesAtual));
     });
-    // , () => { console.log(this.state.avaliacoes); });
-    console.log(avaliacoes);
+  }
 
-    // console.log(comentario);
-    // console.log(avaliacaoObj);
+  clickRadioBNota = ({ target }) => {
+    this.setState({ nota: target.value, isDisable: false });
   }
 
   render() {
-    const { avaliacoes } = this.state;
-    // console.log(avaliacoes);
-    // const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-    // const total = totalArray.reduce((result, acc) => acc + result);
-    const todasAvaliacoes = avaliacoes.map((e) => {
-      const av = (
-        <div key={ e.email }>
-          <div>
-            <p>
-              Cliente:
-              {e.email}
-            </p>
-          </div>
-          <div>
-            <p>
-              Comentario:
-              {e.comentario}
-            </p>
-          </div>
+    const { avaliacoes, isDisable } = this.state;
+    const todasAvaliacoes = avaliacoes.map((element, index) => {
+      const formatoImpressaoComentario = (
+        <div key={ `${element.email}+${index}` }>
+          <p>
+            {element.email}
+          </p>
+          <p>
+            {element.nota}
+          </p>
+          <p>
+            {element.comentario}
+          </p>
+          <hr />
         </div>
       );
-      return av;
+      return formatoImpressaoComentario;
     });
-
     return (
       <div>
         <hr />
-        <main>
-          <h3>Avaliações</h3>
-          <section>
-            <div>
-              <input type="email" placeholder="Email" />
-            </div>
-            <div>
-              <textarea placeholder="Mensagem (opcional)" />
-            </div>
-            <button type="button" onClick={ this.handleClick }>Avaliar</button>
-          </section>
-          <hr />
-          <section>
-            <div>
-              { todasAvaliacoes }
-              oi
-            </div>
-          </section>
-        </main>
+        <h3>Avaliações</h3>
+        <section>
+          <span>
+            <input
+              type="email"
+              placeholder="Email"
+              data-testid="product-detail-email"
+            />
+          </span>
+          <span>
+            <label htmlFor="radio1">
+              <input
+                type="radio"
+                data-testid="1-rating"
+                name="nota"
+                id="radio1"
+                value="★"
+                onClick={ this.clickRadioBNota }
+              />
+              ★
+            </label>
+            <label htmlFor="radio2">
+              <input
+                type="radio"
+                data-testid="2-rating"
+                name="nota"
+                id="radio2"
+                value="★★"
+                onClick={ this.clickRadioBNota }
+              />
+              ★★
+            </label>
+            <label htmlFor="radio3">
+              <input
+                type="radio"
+                data-testid="3-rating"
+                name="nota"
+                id="radio3"
+                value="★★★"
+                onClick={ this.clickRadioBNota }
+              />
+              ★★★
+            </label>
+            <label htmlFor="radio4">
+              <input
+                type="radio"
+                data-testid="4-rating"
+                name="nota"
+                id="radio4"
+                value="★★★★"
+                onClick={ this.clickRadioBNota }
+              />
+              ★★★★
+            </label>
+            <label htmlFor="radio5">
+              <input
+                type="radio"
+                data-testid="5-rating"
+                name="nota"
+                id="radio5"
+                value="★★★★★"
+                onClick={ this.clickRadioBNota }
+              />
+              ★★★★★
+            </label>
+          </span>
+          <div>
+            <textarea
+              placeholder="Mensagem (opcional)"
+              data-testid="product-detail-evaluation"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={ this.clickButtonAvaliar }
+            data-testid="submit-review-btn"
+            disabled={ isDisable }
+          >
+            Avaliar
+          </button>
+        </section>
+        <hr />
+        <section>
+          { todasAvaliacoes }
+        </section>
         <hr />
       </div>
     );
   }
 }
-
-// FormProductDetail.propTypes = {
-//   match: PropTypes.shape({
-//     params: PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//     }).isRequired,
-//   }).isRequired,
-// };
