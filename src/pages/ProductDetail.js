@@ -97,8 +97,6 @@ export default class ProductDetail extends Component {
           { cartLink }
         </Link>
         { producDetail }
-        {/* {JSON.parse(localStorage.prod)[0].id} */}
-        {/* <FormProductDetail /> */}
       </div>
     );
   }

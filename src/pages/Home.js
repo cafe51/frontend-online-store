@@ -10,8 +10,6 @@ import './Home.css';
 export default class Home extends Component {
   constructor() {
     super();
-    // const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-    // const total = totalArray.reduce((result, acc) => acc + result);
     this.state = {
       nameProduct: '',
       products: [],
@@ -21,12 +19,6 @@ export default class Home extends Component {
       carrinhoTotal: 0,
     };
   }
-
-  // componentDidMount() {
-  //   const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-  //   const total = totalArray.reduce((result, acc) => acc + result);
-  //   this.setState({ carrinhoTotal: total });
-  // }
 
   getCategoriesApi = async () => {
     const categories = await getCategories();
@@ -39,7 +31,6 @@ export default class Home extends Component {
     const { nameCategory, categories, nameProduct } = this.state;
     const idCategory = categories.find((element) => element.name === nameCategory);
     const getProducts = await getProductsFromCategoryAndQuery(idCategory.id, nameProduct);
-    // console.log(getProducts);
     this.setState({
       products: getProducts.results,
       idCategory,
@@ -61,6 +52,7 @@ export default class Home extends Component {
   handleClick = async () => {
     const { nameProduct, idCategory } = this.state;
     const getProducts = await getProductsFromCategoryAndQuery(idCategory.id, nameProduct);
+    console.log(getProducts);
     this.setState({
       products: getProducts.results,
     });
@@ -85,7 +77,6 @@ export default class Home extends Component {
     const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
     const total = totalArray.reduce((result, acc) => acc + result);
     this.setState({ carrinhoTotal: total });
-    // console.log(this.state.carrinhoTotal)
   }
 
   render() {
@@ -136,6 +127,7 @@ export default class Home extends Component {
                       thumbnail={ prod.thumbnail }
                       price={ prod.price }
                       id={ prod.id }
+                      availableQuantity={ prod.available_quantity }
                       addCarrinho={ this.addCarrinho }
                     />
                   ))
