@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default class ShoppingCart extends Component {
   constructor() {
@@ -65,8 +66,10 @@ export default class ShoppingCart extends Component {
                   <p data-testid="shopping-cart-product-name">{ prod.title }</p>
                   <img src={ prod.thumbnail } alt="Foto do Produto" />
                   <p>
-                    { `R$${(parseFloat(prod.price) * prod.quant)
-                      .toFixed(2).replace('.', ',')}` }
+                    {
+                      `R$${(parseFloat(prod.price) * prod.quant)
+                        .toFixed(2).replace('.', ',')}`
+                    }
                   </p>
                   <p data-testid="shopping-cart-product-quantity">{ prod.quant }</p>
                   <button
@@ -100,7 +103,23 @@ export default class ShoppingCart extends Component {
               </p>
             )
         }
+        <button
+          type="submit"
+          data-testid="checkout-products"
+          onClick={ () => {
+            const { history } = this.props;
+            history.push('/checkout');
+          } }
+        >
+          Finalizar Compra
+        </button>
       </div>
     );
   }
 }
+
+ShoppingCart.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
