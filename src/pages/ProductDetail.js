@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductDetail } from '../services/api';
+import FormProductDetail from '../components/FormProductDetail';
 
 export default class ProductDetail extends Component {
   constructor() {
@@ -67,6 +68,7 @@ export default class ProductDetail extends Component {
             </p>
           ))
         }
+        <FormProductDetail />
       </div>
     );
   }
