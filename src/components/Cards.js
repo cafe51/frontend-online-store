@@ -38,7 +38,7 @@ export default class Cards extends Component {
           to={ `/productDetail/${id}` }
           data-testid="product-detail-link"
         >
-          Detalhes
+          <button type="button">Detalhes</button>
         </Link>
         <button
           type="button"

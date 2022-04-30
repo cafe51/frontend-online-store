@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductDetail } from '../services/api';
-import FormProductDetail from '../components/FormProductDetail';
 
 export default class ProductDetail extends Component {
   constructor() {
-    // const local = JSON.parse(localStorage.getItem('prod'));
-    // const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-    // const total = totalArray.reduce((result, acc) => acc + result);
+    const local = JSON.parse(localStorage.getItem('prod')) === null
+      ? [] : JSON.parse(localStorage.getItem('prod'));
+    const totalArray = local.map((e) => e.quant);
+    const total = totalArray.reduce((result, acc) => acc + result, 0);
 
     super();
     this.state = {
@@ -16,27 +16,20 @@ export default class ProductDetail extends Component {
       title: '',
       price: 0,
       attributes: [],
-      totalCart: 0,
-      // coisa: 0,
+      totalCart: total,
     };
   }
 
   async componentDidMount() {
-    // const local = JSON.parse(localStorage.getItem('prod'));
-    const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-    const total = totalArray.reduce((result, acc) => acc + result);
     const { match: { params: { id } } } = this.props;
     const product = await getProductDetail(id);
-    // console.log(product);
     const { thumbnail, title, price, attributes } = product;
-
     this.setState({
       thumbnail,
       title,
       price,
       attributes,
       id,
-      totalCart: total,
     });
   }
 
@@ -57,22 +50,19 @@ export default class ProductDetail extends Component {
     localStorage.setItem('prod', JSON.stringify(list));
 
     const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-    const total = totalArray.reduce((result, acc) => acc + result);
+    const total = totalArray.reduce((result, acc) => acc + result, 0);
     this.setState({ totalCart: total });
-    // console.log(this.state.carrinhoTotal)
   }
 
   render() {
     const { thumbnail, title, price, attributes, id, totalCart } = this.state;
-    // const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
-    // const total = totalArray.reduce((result, acc) => acc + result);
 
     const cartLink = (
       <div>
         Carrinho
         <div data-testid="shopping-cart-size">
           {/* { coisa } */}
-          { totalCart }
+          {totalCart}
         </div>
       </div>
     );
@@ -105,7 +95,8 @@ export default class ProductDetail extends Component {
           { cartLink }
         </Link>
         { producDetail }
-        <FormProductDetail />
+        {/* {JSON.parse(localStorage.prod)[0].id} */}
+        {/* <FormProductDetail /> */}
       </div>
     );
   }

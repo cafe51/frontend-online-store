@@ -10,7 +10,7 @@ export default class FormProductDetail extends Component {
 
     super();
     this.state = {
-      avaliacoes: '',
+      avaliacoes: [],
     };
   }
 
@@ -23,38 +23,40 @@ export default class FormProductDetail extends Component {
     };
     // console.log(avaliacaoObj);
     const { avaliacoes } = this.state;
-    this.setState = ({
-      avaliacoes: [avaliacaoObj],
+    this.setState({
+      avaliacoes: [...avaliacoes, avaliacaoObj],
     });
+    // , () => { console.log(this.state.avaliacoes); });
     console.log(avaliacoes);
+
     // console.log(comentario);
     // console.log(avaliacaoObj);
   }
 
   render() {
     const { avaliacoes } = this.state;
-    console.log(avaliacoes);
+    // console.log(avaliacoes);
     // const totalArray = JSON.parse(localStorage.getItem('prod')).map((e) => e.quant);
     // const total = totalArray.reduce((result, acc) => acc + result);
-    // const todasAvaliacoes = avaliacoes.map((e) => {
-    //   const av = (
-    //     <div>
-    //       <div>
-    //         <p>
-    //           Cliente:
-    //           {e.mail}
-    //         </p>
-    //       </div>
-    //       <div>
-    //         <p>
-    //           Comentario:
-    //           {e.comentario}
-    //         </p>
-    //       </div>
-    //     </div>
-    //   );
-    //   return av;
-    // });
+    const todasAvaliacoes = avaliacoes.map((e) => {
+      const av = (
+        <div key={ e.email }>
+          <div>
+            <p>
+              Cliente:
+              {e.email}
+            </p>
+          </div>
+          <div>
+            <p>
+              Comentario:
+              {e.comentario}
+            </p>
+          </div>
+        </div>
+      );
+      return av;
+    });
 
     return (
       <div>
@@ -73,7 +75,7 @@ export default class FormProductDetail extends Component {
           <hr />
           <section>
             <div>
-              {/* { todasAvaliacoes } */}
+              { todasAvaliacoes }
               oi
             </div>
           </section>
