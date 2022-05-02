@@ -7,6 +7,7 @@ export default class ShoppingCart extends Component {
     super();
     this.state = {
       local: [],
+      isDisabled: false,
     };
   }
 
@@ -24,10 +25,16 @@ export default class ShoppingCart extends Component {
   handleClickIncrease = (id) => {
     const { local } = this.state;
     const increase = local.find((prod) => prod.id === id);
-    increase.quant += 1;
-    this.setState(() => ({
-      local,
-    }), () => localStorage.setItem('prod', JSON.stringify(local)));
+    if (increase.availableQuantity <= increase.quant) {
+      this.setState({
+        isDisabled: true,
+      });
+    } else {
+      increase.quant += 1;
+      this.setState(() => ({
+        local,
+      }), () => localStorage.setItem('prod', JSON.stringify(local)));
+    }
   }
 
   handleClickDecrease = (id) => {
@@ -38,6 +45,7 @@ export default class ShoppingCart extends Component {
     }
     this.setState(() => ({
       local,
+      isDisabled: false,
     }), () => localStorage.setItem('prod', JSON.stringify(local)));
   }
 
@@ -51,7 +59,7 @@ export default class ShoppingCart extends Component {
   }
 
   render() {
-    const { local } = this.state;
+    const { local, isDisabled } = this.state;
     // console.log(local);
     return (
       <div>
@@ -76,6 +84,7 @@ export default class ShoppingCart extends Component {
                     type="button"
                     data-testid="product-increase-quantity"
                     onClick={ () => this.handleClickIncrease(prod.id) }
+                    disabled={ isDisabled }
                   >
                     +
                   </button>
