@@ -55,6 +55,7 @@ export default class Home extends Component {
     this.setState({
       products: getProducts.results,
     });
+    console.log(getProducts); // console de onde estou trabalhando
   }
 
   addCarrinho = (product) => {
@@ -128,6 +129,7 @@ export default class Home extends Component {
                       id={ prod.id }
                       availableQuantity={ prod.available_quantity }
                       addCarrinho={ this.addCarrinho }
+                      freeShipping={ prod.shipping.free_shipping }
                     />
                   ))
                 )

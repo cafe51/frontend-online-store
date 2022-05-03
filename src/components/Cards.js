@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 
 export default class Cards extends Component {
   render() {
-    const { title, thumbnail, price, id, addCarrinho, availableQuantity } = this.props;
+    const {
+      title, thumbnail, price, id, addCarrinho, availableQuantity, freeShipping,
+    } = this.props;
     return (
       <div
         data-testid="product"
@@ -13,6 +15,7 @@ export default class Cards extends Component {
         <img src={ thumbnail } alt={ `Foto do ${title}` } />
         <h3>{ title }</h3>
         <p>{ price }</p>
+        { freeShipping && <div data-testid="free-shipping">frete grátis</div>}
         <Link
           to={ `/productDetail/${id}` }
           data-testid="product-detail-link"
@@ -39,4 +42,5 @@ Cards.propTypes = {
   id: PropTypes.string.isRequired,
   addCarrinho: PropTypes.func.isRequired,
   availableQuantity: PropTypes.number.isRequired,
+  freeShipping: PropTypes.bool.isRequired,
 };
